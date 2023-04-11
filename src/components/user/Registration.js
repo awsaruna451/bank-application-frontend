@@ -56,7 +56,7 @@ const Registration = () => {
         console.log(data);
     
       try {
-          const response = await fetch("http://localhost:8181/api/v1/user", {
+          const response = await fetch("http://localhost:8181/api/v1/user/register", {
             method: "POST",
             mode:"cors",
             headers: {
@@ -145,7 +145,7 @@ const Registration = () => {
 
                     <div>
                
-                    <TextField type={'text'} name="userName" value={formData.userName} onChange={handleChange}  margin="normal"  variant="outlined" placeholder="User Name"/>
+                    <TextField type={'text'} name="userName" label="User name" value={formData.userName} onChange={handleChange}  margin="normal"  variant="outlined" placeholder="User Name"/>
                     <TextField type={'email'} name="email" value={formData.email} onChange={handleChange} margin="normal" label="Email"  variant="outlined" placeholder="Email"/>
                     <TextField type={'password'} name="password" value={formData.password} onChange={handleChange} margin="normal"  variant="outlined" placeholder="Password"/>
                     </div>
@@ -158,7 +158,7 @@ const Registration = () => {
                          }}
                          variant="contained"
                          color="warning"
-                    > Button</Button>
+                    > Submit</Button>
 
                 </Box>
             </form>
