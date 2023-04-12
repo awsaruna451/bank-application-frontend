@@ -16,13 +16,13 @@ const Payment = ({customerId}) => {
     const [balance, setBalance] = useState('');
     const [currentBal, setCurrentBal] = useState('');
     const [rentalAmount, setRentalAmount] = useState('');
-    const [loanNo, setLoanNo] = useState('');
+    const [loanDisplayNo, setLoanDisplayNo] = useState('');
     const [formData, setFormData] = useState({
         paymentAmount: '',
         loanNo: '',
         description: '',
     });
-    const [value, setValue] = useState('');
+    const [loanValue, setValue] = useState('');
     const [options, setOptions] = useState([]);
     const token = localStorage.getItem("token");
     console.log(token);
@@ -45,13 +45,17 @@ const Payment = ({customerId}) => {
                     setErrorMessage('Network response was not ok');
                 } else {
                     const jsonResponse = await response.json();
-                    console.log(jsonResponse.data.loans);
-                    setValue(jsonResponse.data.loans[0].loanNo);
-                    setLoanNo(jsonResponse.data.loans[0].loanNo)
-                    setRentalAmount(jsonResponse.data.loans[0].rentalAmount);
+                    if (jsonResponse.data.loans && jsonResponse.data.loans.length > 0) {
+                      console.log(jsonResponse.data.loans);
+                      setValue(jsonResponse.data.loans[0].loanNo);
+                      setLoanDisplayNo(jsonResponse.data.loans[0].loanNo)
+                      setRentalAmount(jsonResponse.data.loans[0].rentalAmount);
+                      setOptions(jsonResponse.data.loans)
+                    }
+        
                     setAccountId(jsonResponse.data.account.accountIdPk);
                     setAccountNo(jsonResponse.data.account.accountNo);
-                    setOptions(jsonResponse.data.loans)
+                  
                     setBalance(jsonResponse.data.account.availableBalance);
                     setCurrentBal(jsonResponse.data.account.currentBalance);
                     setErrorMessage('');
@@ -71,13 +75,7 @@ const Payment = ({customerId}) => {
             ...formData,
             [name]: value
         });
-        if (name ==='loanNo') {
-          setLoanNo(value);
-        }
-        if (name ==='loanNo') {
-          setLoanNo(value);
-        }
-
+       
         setSuccess(false); 
         setErrorMessage('');
     };
@@ -150,7 +148,7 @@ const Payment = ({customerId}) => {
                                   <span>Account No:</span>{accountNo} <br/>
                                   <span>Available Balance:</span>{balance} <br/>
                                   <span>Current Balance:</span>{currentBal} <br/>
-                                  <span>Loan Number:</span>{loanNo} <br/>
+                                  <span>Loan Number:</span>{loanDisplayNo} <br/>
                                   <span>Loan Rental:</span>{rentalAmount} <br/>
                                 </Alert>
                                                         
@@ -181,7 +179,7 @@ const Payment = ({customerId}) => {
                             <Alert severity="error">{errorMessage}</Alert>
                         </Stack>
                     )}
-                    <TextField type={'text'} margin="normal" name="paymentAmount" value={formData.paymentAmount} onChange={handleChange} label="Loan Amount" variant="outlined" placeholder="Loan Amount"/>
+                    <TextField type={'text'} margin="normal" name="paymentAmount" value={formData.paymentAmount} onChange={handleChange} label="Rental Amount" variant="outlined" placeholder="Rental Amount"/>
       
         
                     <FormControl variant="outlined" style={{width: '200px'}}>
@@ -189,7 +187,7 @@ const Payment = ({customerId}) => {
           <Select
             labelId="loan-no-label"
             id="loan-no-select"
-            value={formData.loanNo ==''? value:formData.loanNo}
+            value={formData.loanNo}
             name="loanNo"
             onChange={handleChange}
             label="Loan No."

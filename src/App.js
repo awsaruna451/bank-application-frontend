@@ -4,10 +4,11 @@ import Payment from './components/payment/Payment';
 import Transactions from './components/payment/Transactions';
 import Registration from './components/user/Registration';
 import Login from './components/user/Login';
-import { BrowserRouter as Router, Link, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Routes, Route , useNavigate} from 'react-router-dom';
 
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const theme = createTheme({
   palette: {
@@ -24,9 +25,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [customerId, setCustomerId] = useState('');
 
+
+
   const handleLogout = () => {
     setLoggedIn(false);
     setCustomerId('');
+
   };
 
   return (
@@ -64,7 +68,7 @@ function App() {
             )}
 
             {loggedIn && (
-              <Button onClick={handleLogout} color="inherit">
+              <Button onClick={handleLogout} component={Link} to="/" color="inherit">
                 Logout
               </Button>
             )}   
