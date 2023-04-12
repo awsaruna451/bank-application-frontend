@@ -1,4 +1,4 @@
-import './App.css';
+import React, { useState, useEffect } from "react";
 import FacilityRequest from './components/facility/FacilityRequest';
 import Payment from './components/payment/Payment';
 import Transactions from './components/payment/Transactions';
@@ -20,47 +20,78 @@ const theme = createTheme({
   },
 });
 
-
-
 function App() {
-  return (
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [customerId, setCustomerId] = useState('');
 
-     <ThemeProvider theme={theme}>
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setCustomerId('');
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
       <Router>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Abc Bank Application
             </Typography>
-            <Button component={Link} to="/" color="inherit">
-              Login
-            </Button>
-            <Button component={Link} to="/registration" color="inherit">
-              Registration
-            </Button>
-            <Button component={Link} to="/loan" color="inherit">
-              Personal Loan
-            </Button>
-            <Button component={Link} to="/payment" color="inherit">
-              Payment
-            </Button>
-       
-            <Button component={Link} to="/transaction" color="inherit">
-              Transactions
-            </Button>
+            {!loggedIn && (
+              <Button component={Link} to="/" color="inherit">
+                Login
+              </Button>
+            )}
+            {!loggedIn && (
+              <Button component={Link} to="/registration" color="inherit">
+                Registration
+              </Button>
+            )}
+            {loggedIn && (
+              <Button component={Link} to="/loan" color="inherit">
+                Personal Loan
+              </Button>
+            )}
+            {loggedIn && (
+              <Button component={Link} to="/payment" color="inherit">
+                Payment
+              </Button>
+            )}
+            {loggedIn && (
+              <Button component={Link} to="/transaction" color="inherit">
+                Transactions
+              </Button>
+            )}
+
+            {loggedIn && (
+              <Button onClick={handleLogout} color="inherit">
+                Logout
+              </Button>
+            )}   
           </Toolbar>
         </AppBar>
         <Routes>
-      <Route path='/' element={<Login/>} />
-      <Route path='/registration' element={<Registration/>} />
-      <Route path='/loan' element={<FacilityRequest/>}> 
-      </Route>
-      <Route path='/payment' element={<Payment/>} />
-      <Route path='/transaction' element={<Transactions/>} />
-    </Routes>
-    </Router>   
+          {!loggedIn && (
+            <Route
+              path="/"
+              element={<Login setLoggedIn={setLoggedIn} setCustomerId={setCustomerId}  />}
+            />
+          )}
+          {!loggedIn && (
+            <Route path="/registration" element={<Registration />} />
+          )}
+          {loggedIn && (
+            <Route path="/loan" element={<FacilityRequest customerId={customerId} />}>
+              {" "}
+            </Route>
+          )}
+          {loggedIn && <Route path="/payment" element={<Payment customerId={customerId} />} />}
+          {loggedIn && (
+            <Route path="/transaction" element={<Transactions customerId={customerId} />} />
+          )}
+        </Routes>
+      </Router>
     </ThemeProvider>
-     
   );
 }
 

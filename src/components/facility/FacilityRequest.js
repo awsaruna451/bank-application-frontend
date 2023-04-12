@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { Button, TextField, Typography } from "@mui/material";
 
-const FacilityRequest = () => {
+const FacilityRequest = ({customerId}) => {
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
@@ -29,17 +29,18 @@ const FacilityRequest = () => {
           facilityAmount: formData.facilityAmount,
           facilityTerm: formData.facilityTerm,
           purpose: formData.purpose,
-          customerIdFk: 1
+          customerIdFk: customerId
         };
 
         console.log(data);
+        const token = localStorage.getItem("token");
     
       try {
-          const response = await fetch("http://localhost:8181/api/v1/facility", {
+          const response = await fetch("http://localhost:8181/api/v1/facility/loan", {
             method: "POST",
-            mode:"cors",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(data)
           });

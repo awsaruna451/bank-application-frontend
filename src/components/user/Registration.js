@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 
 const Registration = () => {
     const [success, setSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -60,16 +61,17 @@ const Registration = () => {
             method: "POST",
             mode:"cors",
             headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*"
-              
+              "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
           });
+          const jsonResponse = await response.json();
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            //throw new Error("Network response was not ok");
+            setSuccess(false);
+            setErrorMessage(jsonResponse.error.message);
           } else {
-            console.log(response.success)
+            console.log(jsonResponse.success)
             console.log("Data sent successfully!");
             setSuccess(true);
             setFormData({ // clear the form data after successful submission
@@ -119,6 +121,12 @@ const Registration = () => {
                 <Alert severity="success">Account successfully created!</Alert>
             </Stack>
            )}
+                   {errorMessage !=='' && (
+                        <Stack sx={{ width: '100%' }} spacing={2}>
+                        
+                            <Alert severity="error">{errorMessage}</Alert>
+                        </Stack>
+                    )}
                     <div>
                     <div>
                     <TextField type={'text'} margin="normal" label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} variant="outlined" placeholder="First Name"/>
