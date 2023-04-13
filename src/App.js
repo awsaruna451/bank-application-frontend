@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import FacilityRequest from './components/facility/FacilityRequest';
 import Payment from './components/payment/Payment';
 import Transactions from './components/payment/Transactions';
 import Registration from './components/user/Registration';
 import Login from './components/user/Login';
-import { BrowserRouter as Router, Link, Routes, Route , useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Link, Routes, Route} from 'react-router-dom';
 
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -48,7 +48,7 @@ function App() {
             )}
             {!loggedIn && (
               <Button component={Link} to="/registration" color="inherit">
-                Registration
+                Account Creation
               </Button>
             )}
             {loggedIn && (

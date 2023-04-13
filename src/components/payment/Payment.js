@@ -22,7 +22,7 @@ const Payment = ({customerId}) => {
         loanNo: '',
         description: '',
     });
-    const [loanValue, setValue] = useState('');
+ 
     const [options, setOptions] = useState([]);
     const token = localStorage.getItem("token");
     console.log(token);
@@ -47,7 +47,6 @@ const Payment = ({customerId}) => {
                     const jsonResponse = await response.json();
                     if (jsonResponse.data.loans && jsonResponse.data.loans.length > 0) {
                       console.log(jsonResponse.data.loans);
-                      setValue(jsonResponse.data.loans[0].loanNo);
                       setLoanDisplayNo(jsonResponse.data.loans[0].loanNo)
                       setRentalAmount(jsonResponse.data.loans[0].rentalAmount);
                       setOptions(jsonResponse.data.loans)
